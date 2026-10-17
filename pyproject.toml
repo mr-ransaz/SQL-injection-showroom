@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools==82.0.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sql-injection-showroom"
+version = "0.1.0"
+description = "A localhost-only educational SQL injection comparison lab"
+readme = "README.md"
+requires-python = ">=3.14,<3.15"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{name = "MR Ransaz"}]
+dependencies = ["fastapi==0.143.3", "uvicorn==0.54.0"]
+
+[project.optional-dependencies]
+dev = ["pytest==9.1.1", "pytest-cov==7.1.0", "httpx==0.28.1", "ruff==0.14.1", "build==1.3.0"]
+
+[project.urls]
+Repository = "https://github.com/mr-ransaz/SQL-injection-showroom"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+sqli_showroom = ["static/*.html", "static/*.css", "static/*.js"]
+
+[tool.ruff]
+target-version = "py314"
+line-length = 96
+extend-exclude = [".tmp", ".test-tmp", ".package-check"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=sqli_showroom --cov-branch --cov-report=term-missing --cov-fail-under=90 --basetemp=.test-tmp"
+
+[tool.coverage.run]
+source = ["sqli_showroom"]
+branch = true
+
