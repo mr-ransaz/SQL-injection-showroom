@@ -147,8 +147,8 @@ def verify_reset(client: httpx.Client) -> None:
 
 def main() -> int:
     temporary_root = ROOT / ".tmp"
-    temporary_root.mkdir(parents=True, exist_ok=True)
     try:
+        temporary_root.mkdir(parents=True, exist_ok=True)
         with (
             tempfile.TemporaryDirectory(prefix="smoke-", dir=temporary_root) as directory,
             running_server(

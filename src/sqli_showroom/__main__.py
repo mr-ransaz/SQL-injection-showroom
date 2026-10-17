@@ -18,10 +18,10 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Local educational SQL injection showroom")
     parser.add_argument("--port", type=port_number, default=8000)
     args = parser.parse_args()
-    path = database_path()
-    print(f"Synthetic demo database: {str(path)!r}", flush=True)
-    print(f"Open http://127.0.0.1:{args.port}/ (Ctrl+C to stop)", flush=True)
     try:
+        path = database_path()
+        print(f"Synthetic demo database: {str(path)!r}", flush=True)
+        print(f"Open http://127.0.0.1:{args.port}/ (Ctrl+C to stop)", flush=True)
         uvicorn.run(
             create_app(path),
             host="127.0.0.1",

@@ -18,6 +18,6 @@ def search_vulnerable(path: Path, query: str) -> tuple[str, list[dict], bool]:
     )
     try:
         return sql, read_rows(path, sql), False
-    except sqlite3.OperationalError:
+    except (sqlite3.OperationalError, sqlite3.ProgrammingError):
         # Show the teaching SQL, never SQLite errors or filesystem details.
         return sql, [], True

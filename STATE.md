@@ -1,21 +1,30 @@
 # State — 2026-10-17
 
-- Version: 0.1.0; branch: main; Stage 2 complete.
+- Version: 0.1.0; branch: main; all three stages complete.
 - Initial STATE.md was absent. Initial tree was clean.
 - Bootstrap baseline: af89dc6 (working agreement; no implementation yet).
-- Last implementation commit before this checkpoint: 8dc74a6 (Stage 1).
+- Last implementation commit before this checkpoint: c128c88 (Stage 2).
+- This checkpoint adds Stage 3 release checks, regression fixes and final docs.
 - Python: 3.14.0, project-local .venv; editable dev installation succeeded.
 - Legacy py discovery is broken; verified Python314 executable created the venv.
 - Process-local TEMP/TMP used ignored project .tmp for dependency operations.
 - Runtime and dev direct dependency versions pinned; pip check passed.
 - Ruff check: passed. Ruff format --check: passed.
-- Module pytest: 79 passed. Executable pytest: 79 passed.
-- Coverage: 98.05%, branches enabled, application Python only; excludes HTML/JS.
+- Module pytest: 92 passed. Executable pytest: 92 passed.
+- Coverage: 99.21%, branches enabled, application Python only; excludes HTML/JS.
 - git diff --check: passed; pattern scan: only valid AGENTS.md rule examples.
 - Upstream TestClient httpx deprecation warning remains visible.
 - Docker skipped by release scope; no Docker files/jobs.
 - Root UI and local CSS/JS implemented; CDN-backed documentation UI disabled.
 - Real HTTP smoke: all 8 PASS lines; exit 0; temporary process/data cleaned.
-- Remaining: Stage 3 CI/build/wheel checks/full docs and final regression gates.
-- Browser rendering/clicks and hosted CI have not been verified.
+- Wheel and sdist built; archives include UI assets and reproducible test helpers.
+- Isolated installed wheel: import/version/pip check, root/CSS/JS/health passed.
+- Wheel launched outside repository root; disposable server/venv/database cleaned.
+- Browser: all four presets; desktop 1366px and mobile 390px layouts verified.
+- Browser reset confirmation automation blocked; accept/cancel remains manual.
+- Default launcher ran at 127.0.0.1:8000 and was stopped; port verified free.
+- Read-only Windows/Ubuntu Python 3.14 CI configured; hosted CI not run.
+- Unverified: Ubuntu/hosted CI, browser reset completion, full accessibility audit.
+- README safe local examples checked; py bootstrap needs the documented fallback.
+- Detailed exact smoke output and environment/dependency notes are in NOTES.md.
 - No push, tags, history rewrite, remote repository creation or subagents.

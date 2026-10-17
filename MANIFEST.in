@@ -1,0 +1,4 @@
+include AGENTS.md CHANGELOG.md NOTES.md STATE.md .gitignore
+include .github/workflows/ci.yml
+recursive-include tests *.py
+recursive-include scripts *.py

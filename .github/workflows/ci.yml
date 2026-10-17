@@ -1,0 +1,44 @@
+name: checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.14'
+      - name: Create project venv
+        run: python -m venv .venv
+      - name: Install and verify
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            PYTHON="$GITHUB_WORKSPACE/.venv/Scripts/python.exe"
+            PYTEST="$GITHUB_WORKSPACE/.venv/Scripts/pytest.exe"
+          else
+            PYTHON="$GITHUB_WORKSPACE/.venv/bin/python"
+            PYTEST="$GITHUB_WORKSPACE/.venv/bin/pytest"
+          fi
+          "$PYTHON" -m pip install -e '.[dev]'
+          "$PYTHON" -m pip check
+          "$PYTHON" -m ruff check .
+          "$PYTHON" -m ruff format --check .
+          "$PYTHON" -m pytest -q
+          "$PYTEST" -q
+          git diff --check
+          "$PYTHON" scripts/smoke_test.py
+          "$PYTHON" -m build
+          "$PYTHON" scripts/package_check.py

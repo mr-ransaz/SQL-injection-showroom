@@ -2,7 +2,6 @@
 
 import os
 import secrets
-from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, Request
@@ -32,17 +31,14 @@ def database_path() -> Path:
 
 def create_app(path: Path | None = None) -> FastAPI:
     db_path = (path if path is not None else database_path()).resolve()
+    # Initialize inside the launcher's guarded factory call, before Uvicorn can
+    # log an unhandled lifespan traceback containing local filesystem details.
+    database.initialize(db_path)
     csrf_token = secrets.token_urlsafe(32)
-
-    @asynccontextmanager
-    async def lifespan(app: FastAPI):
-        database.initialize(db_path)
-        yield
 
     app = FastAPI(
         title="SQL-injection-showroom",
         version=__version__,
-        lifespan=lifespan,
         docs_url=None,
         redoc_url=None,
         responses={

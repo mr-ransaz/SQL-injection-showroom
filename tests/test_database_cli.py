@@ -44,6 +44,39 @@ def test_invalid_metadata_refused(db_path):
         database.initialize(db_path)
 
 
+def test_initialization_rolls_back_schema_and_seed(db_path, monkeypatch):
+    original = database._seed
+
+    def fail(connection):
+        original(connection)
+        raise RuntimeError("Synthetic transaction failure")
+
+    with monkeypatch.context() as context:
+        context.setattr(database, "_seed", fail)
+        with pytest.raises(RuntimeError, match="Synthetic transaction"):
+            database.initialize(db_path)
+    with closing(sqlite3.connect(db_path)) as connection:
+        assert connection.execute("SELECT name FROM sqlite_master").fetchall() == []
+    database.initialize(db_path)
+    assert len(database.search_fixed(db_path.resolve(), "")[2]) == 4
+
+
+def test_reset_rolls_back_on_failure(db_path, monkeypatch):
+    database.initialize(db_path)
+    with closing(sqlite3.connect(db_path)) as connection, connection:
+        connection.execute("DELETE FROM products WHERE id = ?", (1,))
+    original = database._seed
+
+    def fail(connection):
+        original(connection)
+        raise RuntimeError("Synthetic transaction failure")
+
+    monkeypatch.setattr(database, "_seed", fail)
+    with pytest.raises(RuntimeError, match="Synthetic transaction"):
+        database.reset(db_path)
+    assert len(database.search_fixed(db_path.resolve(), "")[2]) == 3
+
+
 def test_fixed_passes_bound_parameters(db_path, monkeypatch):
     calls = []
 
@@ -91,6 +124,7 @@ def test_invalid_port_range(port):
 def test_cli_local_defaults(monkeypatch, capsys, args, port):
     calls = []
     monkeypatch.setattr("sys.argv", ["sqli_showroom", *args])
+    monkeypatch.setattr(cli, "create_app", lambda path: object())
     monkeypatch.setattr(cli.uvicorn, "run", lambda app, **kwargs: calls.append(kwargs))
     assert cli.main() == 0
     assert calls == [
@@ -104,6 +138,7 @@ def test_cli_startup_error_sanitized(monkeypatch, capsys):
         raise RuntimeError("PRIVATE_MARKER")
 
     monkeypatch.setattr("sys.argv", ["sqli_showroom"])
+    monkeypatch.setattr(cli, "create_app", lambda path: object())
     monkeypatch.setattr(cli.uvicorn, "run", fail)
     assert cli.main() == 1
     assert "PRIVATE_MARKER" not in capsys.readouterr().out

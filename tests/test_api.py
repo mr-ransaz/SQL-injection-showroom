@@ -40,6 +40,13 @@ def test_apostrophe_and_controlled_error(client):
     assert "sqlite" not in response["error"]["message"].lower()
 
 
+def test_malformed_null_in_vulnerable_sql_is_controlled(client):
+    response = search(client, "vulnerable", "\x00")
+    assert response["rows"] == []
+    assert response["error"]["code"] == "invalid_demo_sql"
+    assert "null character" not in response["error"]["message"]
+
+
 def test_boolean_injection(client):
     payload = EXAMPLES[2].query
     assert len(search(client, "vulnerable", payload)["rows"]) == len(database.PRODUCTS)
