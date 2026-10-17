@@ -51,12 +51,44 @@
   `git log --oneline`, `git status`, test count and coverage, anything
   not verified, and MANUAL CHECKS.
 
-## Project profile (edit per project)
-- Name / repo: <name> / github.com/mr-ransaz/<repo>
+## Project profile
+- Name: SQL-injection-showroom
+- GitHub repository: mr-ransaz/SQL-injection-showroom
+- Distribution / Python package: sql-injection-showroom / sqli_showroom
 - Author / license: MR Ransaz / MIT 2026
-- Purpose: <one line>
-- Stack and dependency policy: <e.g. stdlib-only, or list of allowed libs>
-- Layout and docs location: <e.g. NOTES.md in root, or docs/NOTES.md>
-- Coverage minimum: <e.g. 90%>
-- Project-specific rules: <architecture, security invariants>
-- Tag policy: <e.g. "create no tags" or "create local tag vX.Y.Z at the end">
+- Version: 0.1.0
+- Purpose: a localhost-only educational showroom comparing deliberately
+  vulnerable SQL queries with parameterized fixes.
+- Stack: Python 3.14, FastAPI, Uvicorn, stdlib sqlite3, vanilla HTML/CSS/JS.
+  Development tools: pytest, pytest-cov, httpx, ruff, build.
+- Dependency policy: declare runtime dependencies and a dev extra in
+  pyproject.toml. Verify Python 3.14 compatibility before choosing versions.
+  Pin direct dependencies and explain choices in NOTES.md.
+- Layout: src/sqli_showroom/, tests/, scripts/. README.md, NOTES.md,
+  STATE.md, CHANGELOG.md and AGENTS.md live in the repository root.
+- Coverage minimum: 90% with branch coverage enabled, application Python
+  code only. State explicitly that browser JavaScript is not measured.
+- Security boundary: intentionally vulnerable SQL is allowed only inside
+  the clearly named vulnerable lab module and only against synthetic data.
+  Fixed queries and all other database operations must use bound parameters
+  wherever values are supplied.
+- Local use only: bind the documented launcher to 127.0.0.1, reject
+  non-loopback clients at the application boundary, validate Host, disable
+  CORS, and never expose the lab through public deployment or tunnels.
+  These controls are safeguards, not a sandbox or production security claim.
+- No real credentials, external targets, external scanning, telemetry,
+  external assets, command execution, or file-reading attack scenarios.
+- Use a dedicated resettable SQLite database with synthetic fixtures.
+  Never modify databases from other projects.
+- Tag policy: create no tags. Never push or create a GitHub repository.
+- Initial bootstrap exception: if STATE.md or commit history does not
+  exist, record that and initialize them. The initial untracked AGENTS.md
+  may be inspected and committed; stop for other unexplained user changes.
+- Placeholder scan exception: literal forbidden-pattern examples in
+  AGENTS.md and intentional synthetic attack fixtures are not defects.
+  Inspect matches; do not modify valid examples merely to silence a scan.
+- README verification: execute safe local examples. GitHub push/release
+  commands and optional Docker commands are manual checks, not actions
+  authorized by documentation.
+- Docker is out of scope for version 0.1.0. Skip the conditional Docker
+  gate explicitly; do not add Docker files or a Docker CI job.
