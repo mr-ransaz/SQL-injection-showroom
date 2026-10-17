@@ -44,3 +44,18 @@
   httpx remains required by this project's tool scope and passes all checks.
 - Live UI, smoke and wheel checks are deferred to their implementation stages.
 
+## Stage 2 verification
+
+- Root UI, CSS and JavaScript are package resources. Dynamic text uses safe DOM
+  methods; no innerHTML. Four presets, independent panel status/results,
+  separate SQL/parameter displays, explanatory text and confirmed reset flow.
+- Swagger/ReDoc routes are disabled to avoid their CDN dependencies;
+  the typed API schema remains at /openapi.json. No dependency changes.
+- Ruff check and format check passed; both pytest entry points: 79 passed,
+  98.05% branch-enabled application coverage. `git diff --check` passed.
+- Pattern scan still matches only AGENTS.md rule examples.
+- Real subprocess smoke: health, root/assets, normal/apostrophe/boolean/UNION
+  comparisons, absent-CSRF rejection, valid reset, process/data cleanup passed;
+  exit 0. This is HTTP verification, not a browser test.
+- Wheel package-data and hosted CI remain unverified at this checkpoint.
+

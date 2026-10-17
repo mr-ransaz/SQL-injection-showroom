@@ -8,6 +8,7 @@ from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException
+from starlette.responses import Response
 
 from . import __version__, database, vulnerable_lab
 from .boundary import LocalBoundary, error_response
@@ -15,6 +16,7 @@ from .models import (
     EXAMPLES,
     ConfigResponse,
     ErrorDetail,
+    ErrorResponse,
     Example,
     HealthResponse,
     ResetRequest,
@@ -37,8 +39,29 @@ def create_app(path: Path | None = None) -> FastAPI:
         database.initialize(db_path)
         yield
 
-    app = FastAPI(title="SQL-injection-showroom", version=__version__, lifespan=lifespan)
+    app = FastAPI(
+        title="SQL-injection-showroom",
+        version=__version__,
+        lifespan=lifespan,
+        docs_url=None,
+        redoc_url=None,
+        responses={
+            code: {"model": ErrorResponse} for code in (400, 403, 404, 405, 413, 415, 422, 500)
+        },
+    )
     app.add_middleware(LocalBoundary)
+    static = Path(__file__).with_name("static")
+
+    @app.get("/", response_class=Response, include_in_schema=False)
+    def root():
+        return Response((static / "index.html").read_bytes(), media_type="text/html")
+
+    @app.get("/assets/{name}", response_class=Response, include_in_schema=False)
+    def asset(name: str):
+        types = {"app.css": "text/css", "app.js": "text/javascript"}
+        if name not in types:
+            raise HTTPException(404)
+        return Response((static / name).read_bytes(), media_type=types[name])
 
     @app.exception_handler(RequestValidationError)
     async def invalid_request(request: Request, exc: RequestValidationError):

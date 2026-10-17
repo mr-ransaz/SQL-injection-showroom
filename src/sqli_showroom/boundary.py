@@ -36,7 +36,8 @@ class LocalBoundary:
                         (
                             b"content-security-policy",
                             b"default-src 'self'; script-src 'self'; style-src 'self'; "
-                            b"connect-src 'self'; object-src 'none'; base-uri 'none'; "
+                            b"connect-src 'self'; img-src 'self' data:; object-src 'none'; "
+                            b"base-uri 'none'; "
                             b"frame-ancestors 'none'; form-action 'self'",
                         ),
                     ]

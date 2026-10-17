@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="A local educational lab comparing SQL injection with parameterized queries.">
+  <title>SQL injection showroom</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/assets/app.css">
+  <script src="/assets/app.js" defer></script>
+</head>
+<body>
+  <div class="warning"><span class="warning-dot" aria-hidden="true"></span> Intentionally vulnerable · Local educational use only · Synthetic data</div>
+  <main>
+    <header>
+      <div class="eyebrow">MR RANSAZ <span>/</span> SECURITY LAB 01</div>
+      <div class="title-row"><h1>One input.<br>Two very different outcomes.</h1><span class="version">v0.1.0 · SQLite</span></div>
+      <p class="intro">See what happens when input becomes SQL code. Compare an unsafe query with its parameterized fix, using the same small catalogue.</p>
+    </header>
+
+    <section class="controls" aria-labelledby="search-label">
+      <form id="search-form">
+        <label id="search-label" for="query">Search the public catalogue</label>
+        <div class="search-row">
+          <input id="query" name="query" type="text" maxlength="256" value="backpack" autocomplete="off" spellcheck="false" aria-describedby="query-help">
+          <button class="primary" id="run" type="submit">Run comparison <span aria-hidden="true">↗</span></button>
+        </div>
+      </form>
+      <div class="preset-row"><span class="small-label">TRY AN EXAMPLE</span><div id="presets" class="presets" aria-label="Search presets"></div></div>
+      <p id="query-help" class="hint">Empty input matches all products. LIKE wildcards: % matches any sequence; _ matches one character. Backslash is ordinary data.</p>
+      <p id="global-status" class="global-status" role="status" aria-live="polite">Loading the local lab…</p>
+      <noscript>This comparison needs JavaScript. All scripts are served locally.</noscript>
+    </section>
+
+    <section class="comparison" aria-label="SQL comparison">
+      <article class="panel vulnerable" id="vulnerable-panel">
+        <div class="panel-header"><div><span class="panel-number">01 / INPUT AS CODE</span><h2>Vulnerable</h2></div><span class="pill unsafe">Interpolated SQL</span></div>
+        <p class="panel-intro">Input is inserted directly into the SQL string.</p>
+        <div class="panel-status" role="status" aria-live="polite">Ready</div>
+        <div class="table-wrap"><table><caption>Vulnerable search results</caption><thead><tr><th>ID</th><th>Name / label</th><th>Description / value</th><th>Record type</th></tr></thead><tbody></tbody></table></div>
+        <p class="empty-message" hidden>No matching records.</p>
+        <details open><summary>Constructed SQL</summary><pre class="sql" tabindex="0">Run a comparison to inspect the query.</pre></details>
+        <p class="panel-note">The deliberately unsafe construction lives in vulnerable_lab.py.</p>
+      </article>
+
+      <article class="panel fixed" id="fixed-panel">
+        <div class="panel-header"><div><span class="panel-number">02 / INPUT AS DATA</span><h2>Fixed</h2></div><span class="pill safe">Bound parameter</span></div>
+        <p class="panel-intro">SQL structure and the search value stay separate.</p>
+        <div class="panel-status" role="status" aria-live="polite">Ready</div>
+        <div class="table-wrap"><table><caption>Fixed search results</caption><thead><tr><th>ID</th><th>Name / label</th><th>Description / value</th><th>Record type</th></tr></thead><tbody></tbody></table></div>
+        <p class="empty-message" hidden>No matching records.</p>
+        <details open><summary>SQL template</summary><pre class="sql" tabindex="0">Run a comparison to inspect the query.</pre><h3>Parameters · supplied separately</h3><pre class="parameters" tabindex="0">[]</pre></details>
+        <p class="panel-note">Quote characters remain data. Parameterization does not remove LIKE wildcards.</p>
+      </article>
+    </section>
+
+    <section class="explanation" aria-labelledby="explanation-heading">
+      <span class="small-label">WHAT TO NOTICE</span><h2 id="explanation-heading">Keep code and data separate.</h2>
+      <p id="explanation">The same input is sent to both implementations. Compare the SQL, parameters, and returned rows.</p>
+      <div class="legend"><span><i class="public-dot" aria-hidden="true"></i> Public catalogue</span><span><i class="internal-dot" aria-hidden="true"></i> Synthetic internal · fake training data</span></div>
+    </section>
+
+    <footer><div><strong>A small lab, with a deliberate boundary.</strong><p>Loopback only. No real credentials or external targets. These controls are safeguards, not a security sandbox. Do not deploy publicly.</p></div><button id="reset" class="secondary" type="button" disabled>Reset demo data</button></footer>
+  </main>
+</body>
+</html>

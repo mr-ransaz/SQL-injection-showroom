@@ -1,0 +1,73 @@
+:root { color-scheme: dark; --bg: #0c1015; --surface: #131920; --border: #2b3541; --text: #edf2f6; --muted: #a8b6c5; --amber: #ffbc75; --mint: #8de0c0; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.65 "Segoe UI", system-ui, sans-serif; }
+.warning { border-bottom: 1px solid #5e442b; background: #211a14; color: #efc89d; padding: 10px 24px; text-align: center; font-size: 12px; letter-spacing: .04em; }
+.warning-dot, .legend i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 8px; background: var(--amber); }
+main { max-width: 1440px; margin: auto; padding: 44px 48px 24px; }
+.eyebrow, .small-label, .panel-number { font-size: 11px; font-weight: 650; letter-spacing: .12em; color: var(--muted); }
+.eyebrow span { margin: 0 12px; color: #5b6876; }
+.title-row { display: flex; align-items: end; justify-content: space-between; gap: 24px; }
+h1 { font-size: clamp(32px, 4vw, 56px); line-height: 1.12; font-weight: 600; letter-spacing: -.045em; margin: 24px 0 20px; }
+.version { font: 12px/1.6 ui-monospace, Consolas, monospace; white-space: nowrap; color: var(--muted); padding-bottom: 24px; }
+.intro { max-width: 660px; color: var(--muted); margin: 0 0 32px; }
+.controls { border: 1px solid var(--border); border-radius: 12px; background: var(--surface); padding: 24px; }
+label { display: block; margin-bottom: 10px; font-size: 13px; font-weight: 600; }
+.search-row { display: flex; gap: 12px; }
+input { flex: 1; min-width: 0; border: 1px solid #3e4c5b; border-radius: 6px; padding: 13px 16px; background: #0d131a; color: var(--text); font: 14px/1.5 ui-monospace, Consolas, monospace; }
+button { cursor: pointer; border: 1px solid var(--border); border-radius: 6px; padding: 10px 15px; font: 600 13px/1.5 "Segoe UI", system-ui, sans-serif; transition: background .15s, border-color .15s; }
+button:disabled { cursor: wait; opacity: .6; }
+.primary { background: var(--mint); border-color: var(--mint); color: #10261e; min-width: 180px; }
+.primary:hover { background: #adf0d5; }
+.primary span { margin-left: 16px; }
+.preset-row { display: flex; align-items: center; gap: 16px; margin-top: 18px; flex-wrap: wrap; }
+.presets { display: flex; flex-wrap: wrap; gap: 8px; }
+.presets button, .secondary { background: #1c242e; color: #dce4ed; }
+.presets button { font-size: 12px; font-weight: 400; padding: 6px 12px; }
+.presets button:hover, .secondary:hover { border-color: #9faebf; background: #27323e; }
+.presets button[aria-pressed="true"] { border-color: var(--mint); color: var(--mint); }
+.hint { color: var(--muted); font-size: 12px; margin: 15px 0 0; }
+.global-status { min-height: 21px; font-size: 12px; color: var(--mint); margin: 7px 0 0; }
+.global-status.error, .panel-status.error { color: #ffb1a9; }
+.comparison { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; margin: 24px 0; }
+.panel { min-width: 0; border: 1px solid var(--border); border-radius: 12px; padding: 22px; background: var(--surface); border-top: 3px solid var(--amber); }
+.panel.fixed { border-top-color: var(--mint); }
+.panel-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.panel h2 { margin: 3px 0 0; font-size: 24px; font-weight: 550; letter-spacing: -.025em; }
+.vulnerable .panel-number { color: var(--amber); }
+.fixed .panel-number { color: var(--mint); }
+.pill { font-size: 10px; padding: 4px 9px; border-radius: 4px; font-weight: 600; white-space: nowrap; }
+.unsafe { background: #34291f; color: var(--amber); }
+.safe { background: #18342c; color: var(--mint); }
+.panel-intro, .panel-note { color: var(--muted); font-size: 12px; }
+.panel-intro { margin: 12px 0 16px; }
+.panel-status { font-size: 12px; padding: 10px 0; border-top: 1px solid var(--border); }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; }
+caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+th { font-size: 10px; color: var(--muted); font-weight: 600; background: #1a232d; padding: 10px 8px; }
+td { padding: 12px 8px; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; vertical-align: top; }
+th:first-child, td:first-child { width: 32px; }
+td:last-child { font-size: 10px; color: #b9c9d8; }
+tr.internal { background: #30231e; color: #ffd0b0; }
+tr.internal td:last-child { color: var(--amber); font-weight: 600; }
+.empty-message { color: var(--muted); font-size: 12px; padding: 14px 0; }
+details { margin-top: 20px; }
+summary { font-size: 12px; color: #d2dce6; cursor: pointer; }
+pre { padding: 14px; border-radius: 6px; border: 1px solid #26323f; background: #0c1219; color: #c2d0de; white-space: pre-wrap; overflow-wrap: anywhere; font: 12px/1.8 ui-monospace, Consolas, monospace; }
+.vulnerable pre { color: #edc39b; }
+.fixed pre { color: #a2d7c3; }
+h3 { font-size: 11px; font-weight: 400; color: var(--muted); margin-top: 16px; }
+.panel-note { margin-bottom: 0; font-size: 11px; }
+.explanation { padding: 8px 0 26px; max-width: 900px; }
+.explanation h2 { font-size: 22px; font-weight: 500; margin: 8px 0; letter-spacing: -.02em; }
+.explanation p { color: var(--muted); font-size: 14px; margin: 0 0 16px; }
+.legend { display: flex; gap: 24px; flex-wrap: wrap; font-size: 11px; color: var(--muted); }
+.legend .public-dot { background: #b3c8dd; }
+footer { border-top: 1px solid var(--border); padding-top: 24px; display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+footer strong { font-size: 12px; font-weight: 500; }
+footer p { font-size: 11px; color: var(--muted); max-width: 730px; margin: 6px 0; }
+.secondary { white-space: nowrap; }
+:focus-visible { outline: 2px solid var(--mint); outline-offset: 4px; }
+[hidden] { display: none !important; }
+@media (max-width: 850px) { main { padding: 28px 20px 24px; } .comparison { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .title-row { display: block; } .version { display: block; padding-bottom: 16px; } .search-row, footer { flex-direction: column; align-items: stretch; } .controls, .panel { padding: 18px; } h1 { font-size: 34px; } .warning { font-size: 10px; padding: 10px 14px; } .legend { gap: 10px; } }
